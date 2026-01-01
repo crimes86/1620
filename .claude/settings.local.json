@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir \"C:\\\\Users\\\\kevin\\\\OneDrive\\\\1620\")",
+      "Bash(dir /s /b \"C:\\\\Users\\\\kevin\")",
+      "Bash(findstr:*)",
+      "Bash(dir /b \"C:\\\\Users\\\\kevin\\\\OneDrive\\\\1620\")",
+      "Bash(ssh root@167.172.250.97 \"ls -la /root/1620-game/docs/\")",
+      "Bash(ssh root@167.172.250.97 \"ls -la /root/1620-game/Unity/Assets/Editor/ 2>/dev/null; ls -la /root/1620-game/Unity/\")",
+      "Bash(if not exist \"C:\\\\Users\\\\kevin\\\\OneDrive\\\\1620\\\\docs\" mkdir \"C:\\\\Users\\\\kevin\\\\OneDrive\\\\1620\\\\docs\")",
+      "Bash(scp:*)",
+      "Bash(mkdir:*)",
+      "Bash(curl:*)",
+      "Bash(\"/c/Program Files/Unity/Hub/Editor/6000.3.2f1/Editor/Unity.exe\" -projectPath \"/c/Users/kevin/OneDrive/1620/My project\" -executeMethod GrayboxSetup.GenerateFromCommandLine -batchmode -quit -logFile -)",
+      "WebSearch",
+      "Bash(git init:*)",
+      "Bash(git add:*)"
+    ]
+  }
+}

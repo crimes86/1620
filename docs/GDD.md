@@ -1,0 +1,806 @@
+# 1620
+## Game Design Document v0.1
+
+---
+
+## Elevator Pitch
+
+"The Revenant meets Rust, set during first contact. Play as colonist or native. Survive the wilderness. Survive each other. History remembers the winners."
+
+**Tagline options:**
+- "History remembers the winners."
+- "Two peoples. One land. No mercy."
+- "Before America, there was survival."
+
+---
+
+## Core Concept
+
+A 3D survival MMO set in early 1600s colonial America. Two playable factions - European settlers and Native American nations - compete for resources, territory, and survival in a brutal, historically-grounded open world.
+
+**Tone:** The Revenant (2015) - visceral, grounded, beautiful, unforgiving
+
+**Setting:** Northeastern America, 1620s - Plymouth, Massachusetts Bay, and surrounding wilderness
+
+---
+
+## Design Pillars
+
+1. **Survival is brutal** - Cold, hunger, disease, injuries that linger
+2. **Every life matters** - Permadeath or harsh death penalties, no respawn spam
+3. **Two truths** - Both factions are playable, both have valid perspectives
+4. **History as gameplay** - Real events, real tensions, real consequences
+5. **The land is a character** - Seasons, weather, wildlife shape everything
+
+---
+
+## Factions
+
+### Faction Balance: Rock-Paper-Scissors
+
+Each faction excels in one domain, creating natural interdependence and trade opportunities:
+
+| Faction | Specialty | Advantage | Weakness |
+|---------|-----------|-----------|----------|
+| **Native Nations** | Land & Resources | Hunting, foraging, medicine, tracking | Limited metal tools, no firearms (early) |
+| **American Settlers** | Weapons & Industry | Firearms, metal tools, fortifications | Can't navigate, starve without help |
+| **French-Canadians** | Waterways & Trade | Fast travel, trade networks, diplomacy | Can't hold territory, small numbers |
+
+**The triangle:**
+```
+            NATIVES
+           (Resources)
+              /\
+             /  \
+            /    \
+           /      \
+          /        \
+    FRENCH ──────── AMERICAN
+   (Travel)        (Weapons)
+```
+
+- **Natives** need French trade goods and eventually American metal
+- **Americans** need Native knowledge to survive and French routes to expand
+- **French** need Native pelts to trade and American markets to sell to
+
+No faction can dominate alone. Alliances shift. History happens.
+
+---
+
+### The Wampanoag Confederacy (Native Nations)
+
+**Fantasy:** Live as your ancestors did. Protect your homeland. Witness the beginning of the end.
+
+**Strengths:**
+- Deep knowledge of the land (tracking, foraging, hunting bonuses)
+- Established settlements and trade routes
+- Spiritual mechanics (vision quests, animal totems)
+- Superior mobility (canoes, forest navigation)
+- Alliance network with other tribes
+
+**Weaknesses:**
+- No immunity to European diseases
+- Limited access to metal tools/firearms (early game)
+- Outnumbered as more ships arrive
+
+**Gameplay loop:**
+- Hunt, fish, farm (three sisters: corn, beans, squash)
+- Protect sacred sites and hunting grounds
+- Trade or raid settler camps
+- Diplomatic missions to other tribes
+- Rituals and ceremonies for buffs/progression
+
+---
+
+### Plymouth Colony (European Settlers)
+
+**Fantasy:** Survive in a new world. Build a future. But at what cost?
+
+**Strengths:**
+- Firearms (slow, loud, deadly)
+- Metal tools (axes, saws, nails)
+- Ships bring reinforcements and supplies
+- Fortification knowledge
+- Written communication (letters, maps)
+
+**Weaknesses:**
+- No knowledge of the land (starving times)
+- Disease cuts both ways (scurvy, harsh winters)
+- Dependent on supply ships
+- Internal religious/political conflict
+
+**Gameplay loop:**
+- Chop wood, build shelter, farm European crops
+- Hunt unfamiliar animals
+- Trade with or fight natives
+- Expand territory, build fortifications
+- Wait for (or signal) supply ships
+
+---
+
+### French-Canadian Traders (Third Faction / NPC)
+
+**Fantasy:** Masters of the wilderness. You've been here for generations. The land is your highway.
+
+**Available:** Unlocked in later eras (1700+) or as NPCs in 1620
+
+**Strengths:**
+- Expert wilderness navigation (canoes, river networks)
+- Established Native alliances through intermarriage
+- Best fur trading knowledge and routes
+- Bilingual (French + Native languages)
+- Can move freely between factions
+
+**Weaknesses:**
+- No territorial claims (traders, not settlers)
+- Caught between empires (British, French, American)
+- Small population, can't hold ground
+- Dependent on beaver economy
+
+**Gameplay loop:**
+- Paddle river networks for speed
+- Trade with all factions (profit from conflict)
+- Run trading posts in neutral territory
+- Hire out as guides
+- Build Métis communities (mixed culture)
+
+**Unique mechanics:**
+- **River mastery:** Canoe travel 3x faster than walking
+- **Reputation with all factions:** Can be friendly with natives AND settlers
+- **Trading post economy:** Set up shops, profit from others' survival needs
+- **Métis identity:** Children inherit mixed bonuses
+
+**Historical note:**
+French-Canadians controlled the interior of North America via waterways while British colonists were stuck behind the Appalachians. A voyageur could paddle from Montreal to Montana. By 1820 (The Revenant era), they were the most experienced wilderness operators but caught between the American expansion and their fading empire.
+
+---
+
+## Geography: The Shape of the Continent
+
+Understanding the land is key to understanding the conflict.
+
+### The Layers (East to West, 1620-1820)
+
+```
+WEST ◄──────────────────────────────────────────────► EAST
+
+┌─────────────────────────────────────────────────────────┐
+│                                                         │
+│  ROCKY         GREAT        MISSISSIPPI    APPALACHIAN │
+│  MOUNTAINS     PLAINS       RIVER          MOUNTAINS   │
+│     │            │             │               │        │
+│     │      The Revenant       │          The Barrier   │
+│     │       (1823)            │               │        │
+│     ▼            ▼             ▼               ▼        │
+│                                                         │
+│  [Unexplored]  [Frontier]   [Edge of      [Farmland]   │
+│                              Civilization]             │
+│                                    │                    │
+│                              ★ St. Louis               │
+│                                    │                    │
+│                              ★ New Orleans              │
+│                                                         │
+│                    ▲                          ★ Boston  │
+│                    │                          ★ New York│
+│              FRENCH RIVER                     ★ Philly  │
+│              NETWORK                                    │
+│                    │                                    │
+│              ★ Montreal                                 │
+│              (French Canada)                            │
+│                                                         │
+└─────────────────────────────────────────────────────────┘
+```
+
+### The Zones
+
+| Zone | Description | 1620 | 1820 |
+|------|-------------|------|------|
+| **Atlantic Coast** | Where ships land | Plymouth colony | Major cities (200 yrs old) |
+| **Coastal Farmland** | 50-100 miles inland | Wilderness | Settled farms, roads |
+| **Appalachian Mountains** | Natural wall | Impassable barrier | Sparse mountain folk |
+| **Ohio Valley** | Beyond the mountains | Native territory | New settlements |
+| **Mississippi River** | The great highway | French traders | Edge of civilization |
+| **Great Plains** | Buffalo country | Native homeland | Fur trapper territory |
+| **Rocky Mountains** | Continental divide | Unknown | Barely explored |
+
+### The French Waterway Network
+
+The French understood something the British didn't: **rivers are highways**.
+
+```
+Montreal
+    ↓
+St. Lawrence River
+    ↓
+Great Lakes (Superior, Michigan, Huron)
+    ↓
+Portage routes (carry canoes between rivers)
+    ↓
+Mississippi River tributaries
+    ↓
+All the way to New Orleans (or west to Montana)
+```
+
+**Gameplay implication:** Controlling rivers = controlling trade. French-Canadian players/NPCs use this network to move faster and access areas others can't reach easily.
+
+### Distance Reality
+
+The scale of North America shocked Europeans:
+
+| Journey | Distance | 1820 Travel Time |
+|---------|----------|------------------|
+| Boston → Philadelphia | 300 miles | 3-5 days (road) |
+| Philadelphia → Pittsburgh | 300 miles | 1-2 weeks (mountain crossing) |
+| St. Louis → Montana | 1,500 miles | 3-6 months (river/overland) |
+| Montreal → New Orleans | 2,000 miles | 2-3 months (river) |
+
+The Revenant takes place **months** of travel from any city. You are truly alone.
+
+### Map Progression (Full Game)
+
+| Era | Playable Region | New Zones |
+|-----|-----------------|-----------|
+| **1620** | Massachusetts Bay (Plymouth) | Coastal forest, native villages |
+| **1700** | Expand to New York, Pennsylvania | Appalachian foothills, river valleys |
+| **1750** | Ohio Valley opens | French forts, Great Lakes access |
+| **1800** | Louisiana Purchase | Mississippi River, Great Plains edge |
+| **1820** | Full frontier (demo content) | Montana, Rockies, Revenant territory |
+
+---
+
+## Core Systems
+
+### Survival
+
+| Need | Mechanic |
+|------|----------|
+| Hunger | Hunt, fish, forage, farm. Different foods have different nutrition. Seasons affect availability. |
+| Thirst | Fresh water sources. Boiling prevents disease. Alcohol trades nutrition for warmth. |
+| Temperature | Clothing, fire, shelter. Hypothermia in winter. Heatstroke in summer. |
+| Health | Injuries persist. Broken bones, infections, bleeding. Medicine is scarce. |
+| Disease | Smallpox, flu devastate natives. Scurvy, dysentery hit settlers. Quarantine mechanics. |
+
+### Combat
+
+**Inspired by:** The Revenant's visceral, desperate fights
+
+- **Melee:** Tomahawks, knives, clubs, hatchets. Stamina-based. Grappling.
+- **Ranged (Native):** Bows - silent, fast, moderate damage. Skill-based aiming.
+- **Ranged (Settler):** Muskets - loud, slow reload (20-30 seconds), devastating damage. Alerts everyone nearby.
+- **Injuries:** Wounds affect performance. Arrow in leg = limping. Cut arm = weak swings.
+- **Executions:** Downed players can be finished or captured.
+
+### Crafting
+
+**Native crafting:**
+- Birch bark canoes
+- Leather clothing, moccasins
+- Bows, arrows (different tips for different prey)
+- Wampum (currency/diplomacy)
+- Medicine from plants
+- Wigwams, longhouses
+
+**Settler crafting:**
+- Log cabins, palisades
+- Muskets, powder, shot (complex, many components)
+- Metal tools (requires forge, fuel, ore)
+- Preserved foods (salting, smoking)
+- Clothing (wool, linen)
+
+### Seasons
+
+| Season | Effects |
+|--------|---------|
+| Spring | Rivers flood, planting season, animals return, mud slows travel |
+| Summer | Peak hunting, farming, long days, heat exhaustion risk |
+| Fall | Harvest, animal migrations, preparation time, best trading |
+| Winter | Starvation risk, hypothermia, limited hunting, reduced conflict |
+
+---
+
+## World Design
+
+### Starting Zones
+
+**Native players:** Start in established village. Tutorial covers hunting, crafting, spirituality. Learn the land is sacred.
+
+**Settler players:** Arrive by ship. Tutorial is the starving time. Learn desperation, dependence.
+
+### Key Locations
+
+- **Plymouth Rock** - Settler landing point, early settlement
+- **Patuxet** - Wampanoag village (Squanto's home)
+- **Trading posts** - Neutral ground, tense exchanges
+- **Sacred groves** - Native ritual sites, spiritual power
+- **Deep wilderness** - Revenant territory, fur trapping, extreme survival
+
+### Map Progression
+
+Launch: Massachusetts Bay area (~50 sq km)
+Expansion 1: Connecticut, Rhode Island
+Expansion 2: New York (Dutch conflict)
+Expansion 3: Push west toward Great Lakes / fur trade territory (Revenant country)
+
+---
+
+## Narrative Framework
+
+### No single story - emergent history
+
+The game doesn't tell you who's right. It shows you what happened and lets players live it.
+
+### Historical events as world events
+
+- **1620:** Mayflower arrives (game launch)
+- **1621:** First Thanksgiving (seasonal event - cooperation or trap?)
+- **1622:** Wessagusset colony conflict
+- **1630:** Great Migration begins (more settlers = power shift)
+- **1636:** Pequot War (if timeline extends)
+
+### Personal stories
+
+- Settlers who defect and join tribes (historically real)
+- Natives who learn English, serve as translators
+- Mixed relationships, mixed loyalties
+- Revenge arcs (your village was burned, your family died of smallpox)
+
+---
+
+## Monetization
+
+### NOT pay-to-win
+
+**Model:** Buy-to-play + cosmetic shop + expansions
+
+- Base game: $40
+- Cosmetics: Historically-accurate clothing variants, canoe designs, weapon skins
+- Expansions: New regions, new tribes, new colonial powers (Dutch, French, Spanish)
+
+### NO:
+- Gameplay advantages for money
+- Loot boxes
+- Pay-to-skip survival
+
+---
+
+## Technical Scope
+
+### Engine: Unreal Engine 5 or Godot 4 (evaluate)
+
+**UE5 pros:** Nanite, Lumen, marketplace assets, industry standard
+**Godot pros:** Free, you know it, lightweight servers
+
+### Server Architecture
+
+- Dedicated servers (50-100 players per world)
+- Persistent world (your cabin stays when you log off)
+- Server clusters by region/era
+
+### Minimum Viable Product (MVP)
+
+1. One small region (10 sq km)
+2. Both factions playable
+3. Core survival loop
+4. Basic combat (melee + bows + one firearm)
+5. Basic crafting (shelter, tools, weapons)
+6. One season (fall)
+7. 20-30 concurrent players
+
+---
+
+## 1820 Demo: "The Ambush"
+
+### Why Start with 1820?
+
+The full game spans 1620-1820, but we build the **demo in 1820 first**:
+
+1. **Proven appeal** - The Revenant (2015) is the direct reference, audiences know this era
+2. **Balanced factions** - Both sides have firearms, horses, 200 years of adaptation
+3. **Simpler pitch** - "The Revenant meets Rust" is instantly understood
+4. **Smart dev order** - 1820 content becomes endgame; 1620 is built by *removing* tech, not adding
+
+### The Scene: Arikara Ambush
+
+Recreate The Revenant's opening: a fur trapper camp on the Upper Missouri River is ambushed at dawn.
+
+**Setting:**
+- Missouri River, South Dakota/Montana territory, 1823
+- Dense forest, river, morning fog
+- Trapper camp: tents, pelts, canoes, fire pits
+
+**Duration:** 5-10 minutes of gameplay
+
+**Playable perspectives:**
+| Trapper (Defend) | Arikara Warrior (Attack) |
+|------------------|--------------------------|
+| Survive the ambush | Execute the raid |
+| Grab rifle, defend camp | Silent approach, then chaos |
+| Flee to the river | Cut off escape routes |
+| Escape into wilderness | Recover stolen goods/captives |
+
+### What the Demo Showcases
+
+| System | Implementation |
+|--------|----------------|
+| Movement | Weighty third-person, stamina, terrain navigation |
+| Melee combat | Tomahawks, knives, grappling, executions |
+| Ranged (Native) | Bows - silent, fast, skill-based aiming |
+| Ranged (Settler) | Flintlock rifles - loud, slow reload (20-30s), devastating |
+| Injuries | Arrow wounds slow movement, blood trail, limping |
+| Environment | River, forest, fog, dynamic lighting |
+| Audio | Gunshots echo, arrows thud, screams, river ambience |
+| AI | Basic enemy/ally combat behavior |
+
+### What the Demo DOESN'T Need
+
+- Full survival systems (hunger, thirst, temperature)
+- Crafting
+- Building
+- Seasons/weather progression
+- Persistent world
+- Multiplayer (single-player demo is fine for pitch)
+
+### Technical Approach
+
+**Engine:** Unity (Invector controller) or Unreal Engine 5
+
+**Development order:**
+1. **Graybox** (1-2 days) - Block out river, treeline, camp with primitives
+2. **Core combat** (2-3 weeks) - Movement, melee, bow, rifle
+3. **Environment art** (2 weeks) - Asset store forest, river, fog
+4. **Characters** (1-2 weeks) - Trappers, warriors, basic animations
+5. **Audio + polish** (1 week) - Sound design sells the immersion
+6. **AI** (1 week) - Basic attack/defend behaviors
+
+**Estimated timeline:** 6-8 weeks focused development
+
+**Asset store acceleration:**
+- Invector Melee Combat Template (~$60)
+- NatureManufacture forests/rivers (~$50-100)
+- Master Archer bow system (~$30)
+- Character base models (Mixamo free or asset store)
+
+### Connection to Full Game
+
+The 1820 demo becomes the **endgame content** in the full release:
+
+```
+Full Game Timeline:
+
+1620 ──────────────────────────────────────► 1820
+[Start]                                    [Endgame/Demo]
+
+- Matchlock muskets → Flintlock rifles
+- No horses → Mounted combat
+- First contact → 200 years of conflict
+- Simple tech → Advanced crafting
+- Pilgrim colonies → Frontier wilderness
+```
+
+**Progression unlocks history:**
+- Server starts in 1620
+- Historical events advance the era
+- Tech trees unlock over time
+- Players experience colonization in real-time
+- Demo content is what everyone works *toward*
+
+---
+
+## 1820 Faction Tech
+
+By 1820, the tech gap has mostly closed. The difference is *how* each faction uses it.
+
+### Native Nations (Plains/Frontier Tribes)
+
+| Category | Tech | Notes |
+|----------|------|-------|
+| **Transport** | Horses | Game-changer. Plains tribes = best cavalry in the world |
+| **Ranged** | Bows (primary), some trade rifles | Bows preferred: silent, 10 arrows/min vs 2 shots/min |
+| **Melee** | Tomahawks, war clubs, lances | Deadly, especially mounted |
+| **Armor** | Buffalo hide shields | Could deflect arrows, sometimes bullets |
+| **Shelter** | Tipis | Mobile, follows buffalo herds |
+| **Medicine** | Herbal, spiritual | Often more effective than American "medicine" |
+| **Clothing** | Buckskin, buffalo robes | Perfectly adapted to environment |
+| **Food** | Pemmican, dried meat | Stores for months, travel light |
+
+**Edge:** Mobility, land knowledge, mounted combat, sustainable living
+
+---
+
+### American Trappers/Frontiersmen
+
+| Category | Tech | Notes |
+|----------|------|-------|
+| **Transport** | Horses, mules | Less skilled riders than natives |
+| **Ranged** | Flintlock rifles (Hawken, Kentucky) | Accurate to 200+ yards, slow reload |
+| **Sidearm** | Flintlock pistols | One shot, then it's a club |
+| **Melee** | Bowie knife, hatchet | Adopted tomahawk from natives |
+| **Trapping** | Steel leg traps | The whole reason they're out there |
+| **Shelter** | Canvas tents, lean-tos | Temporary camps |
+| **Medicine** | Whiskey and prayer | Honestly terrible |
+| **Clothing** | Buckskin (copied natives) | Abandoned wool pretty quick |
+| **Industry** | Gunpowder, lead shot, metal repair | Can maintain firearms |
+
+**Edge:** Firepower, metal tools, connection to Eastern supply chain
+
+#### Who Became a Mountain Man?
+
+The trappers weren't soldiers or settlers - they were **desperate men seeking fortune or escape**.
+
+**Recruitment:**
+- Companies recruited at taverns in St. Louis
+- Promised wealth: $1,000-2,000/year (vs $200-300 for laborers)
+- Many signed contracts they didn't understand
+- Debt traps: company sold supplies at 500% markup, you owed them forever
+
+**The men who signed up:**
+
+| Type | Why They Came |
+|------|---------------|
+| **Debtors** | Escape creditors - no law out there |
+| **Criminals** | Wanted men fleeing justice |
+| **Adventurers** | Couldn't stand "civilization" |
+| **Immigrants** | No land in the East, seek fortune |
+| **Veterans** | After War of 1812, nothing else |
+| **Misfits** | Didn't fit in settled society |
+
+**The brutal reality:**
+- 1 in 3 died within 5 years (natives, bears, cold, accidents, disease)
+- No way home - 6 months travel from civilization
+- If you survived 5-10 years, you might come out rich. Most didn't.
+- Average "career" was 3-5 years before death, injury, or giving up
+
+**Hugh Glass (The Revenant) was typical:**
+- Possibly a former pirate
+- Joined Ashley-Henry expedition for money
+- Nearly died multiple times
+- Kept going back anyway
+
+**Gameplay implication:** American trappers aren't heroes - they're desperate, dangerous men. Some are honorable, some are criminals. Player choice matters.
+
+---
+
+### French-Canadian Voyageurs
+
+| Category | Tech | Notes |
+|----------|------|-------|
+| **Transport** | Birch bark canoes, horses | Canoe is their secret weapon |
+| **Ranged** | Trade muskets, rifles | Similar to Americans |
+| **Melee** | Knives, hatchets | |
+| **Trade goods** | Blankets, beads, metal tools, alcohol, gunpowder | Currency of the frontier |
+| **Shelter** | Trading posts, winter camps | Semi-permanent infrastructure |
+| **Medicine** | Mix of European and Native knowledge | Better than Americans |
+| **Clothing** | Hybrid French-Native style | Capotes, moccasins, sashes |
+| **Navigation** | Maps, river knowledge | Could cross the continent |
+
+**Edge:** Mobility via water, trade networks, diplomacy with all sides
+
+---
+
+### The Edge: Where the Game Takes Place
+
+The game is set at the frontier's edge - minimal establishment, maximum conflict.
+
+```
+THE EDGE (Game Setting)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[Civilization]        [The Edge]           [Deep Wilderness]
+   St. Louis ←————————→ Trading Post ←————————→ Uncharted
+                            ↑
+                       YOUR GAME
+
+- One trading post (neutral ground)
+- Scattered trapper camps
+- Native villages
+- Contested hunting grounds
+- No law, no reinforcements
+```
+
+### What Each Faction Brings
+
+| Faction | Brings | Wants | Controls |
+|---------|--------|-------|----------|
+| **Natives** | Pelts, food, guides, land knowledge | Metal, guns, trade goods | Hunting grounds, sacred sites |
+| **Americans** | Guns, powder, metal traps, Eastern goods | Pelts, survival knowledge | Trapping territories |
+| **French** | Trade goods, river routes, diplomacy | Pelts from both sides | Trading posts, waterways |
+
+### Conflict Drivers
+
+- **Beaver pelts** - the oil of 1820, worth killing for
+- **Territorial hunting rights** - overlapping claims
+- **Trading post control** - whoever controls trade controls the region
+- **Revenge cycles** - raid begets raid
+- **Disease outbreaks** - blame and fear
+- **Supply line disruption** - starve your enemies
+
+---
+
+### Ownership vs Reality: The Legal Fiction
+
+America "bought" Louisiana in 1803. But what does ownership mean when you can't enforce it?
+
+**The absurdity of the Louisiana Purchase:**
+
+| Who "Owned" Louisiana? | Their Claim |
+|------------------------|-------------|
+| **France** | "We claimed it 150 years ago" |
+| **Spain** | "France gave it to us, then took it back" |
+| **America** | "We bought it from France for $15M" |
+| **Native Nations** | "We've LIVED here for 10,000 years" |
+| **Nobody asked the natives** | ← The point |
+
+**On paper vs On the ground:**
+
+```
+ON PAPER (Paris, 1803):              ON THE GROUND (Montana, 1820):
+─────────────────────────────────    ─────────────────────────────────
+"America owns 828,000 sq miles"      Lakota: "You own WHAT now?"
+                                     Arikara: "Nobody told us"
+                                     French trader: "Been here 50 years"
+                                     Grizzly bear: *doesn't care*
+```
+
+**What America actually controlled in 1820:**
+
+```
+┌─────────────────────────────────────────────────────┐
+│           LOUISIANA PURCHASE (on paper)             │
+│                                                     │
+│    Actual American presence:                        │
+│         ★ tiny fort                                 │
+│              ★ trading post (French-run)            │
+│                   ★ 12 trappers                     │
+│                                                     │
+│    Everything else: NATIVE-CONTROLLED               │
+│         Lakota · Crow · Blackfoot                   │
+│              Arikara · Cheyenne                     │
+│                   Pawnee                            │
+│                                                     │
+└─────────────────────────────────────────────────────┘
+              ↑
+        St. Louis (edge of actual American control)
+```
+
+**What "ownership" actually meant:**
+
+| What America Got | What America Didn't Get |
+|------------------|-------------------------|
+| Right to negotiate (not France) | Actual control |
+| Right to trade | Safe passage |
+| Right to exclude European powers | Native compliance |
+| Future settlement claims | Current settlement |
+| Mississippi River shipping | Anything west of it |
+
+**The French-Canadian situation:**
+
+France sold the *government claim*, not the people:
+- French-Canadian traders stayed and kept working
+- Many had native wives, mixed-blood children, no national loyalty
+- "I was here before America existed"
+- They just traded with whoever paid
+
+**The trapper's reality:**
+
+```
+Legal:    "This is United States soil"
+Actual:   "The Arikara control this river"
+          "The Lakota control those plains"
+          "The French control that trading post"
+          "You control your campfire. Maybe."
+```
+
+**Gameplay implication:**
+
+This is **anarchy with commerce**:
+- No faction is "in charge"
+- Treaties mean nothing without force to back them
+- The trading post is neutral because everyone needs it
+- Violence is localized - no cavalry coming to rescue
+- Everyone operates in a legal fiction layered on brutal reality
+
+**Why this makes 1820 perfect for the game:**
+- Old native power isn't broken yet
+- American expansion hasn't arrived in force
+- French traders profit from the chaos
+- Everyone competes in the power vacuum
+- History is up for grabs
+
+---
+
+## Development Roadmap
+
+### Phase 0: 1820 Demo (6-8 weeks)
+- [ ] Graybox scene (river, camp, treeline)
+- [ ] Third-person movement + stamina
+- [ ] Melee combat (tomahawk, knife, grapple)
+- [ ] Bow combat (Native)
+- [ ] Flintlock rifle (Settler)
+- [ ] Injury system (limping, blood trail)
+- [ ] Environment art (forest, river, fog)
+- [ ] Basic AI (attack/defend)
+- [ ] Audio pass (gunshots, arrows, ambience)
+- [ ] Playable from both perspectives
+
+### Phase 1: 1620 Foundation (3-6 months)
+- [ ] Backport demo to 1620 setting
+- [ ] Downgrade weapons (matchlock, no rifles for natives)
+- [ ] Remove horses
+- [ ] Plymouth/Wampanoag factions
+- [ ] Basic survival systems (hunger, cold)
+- [ ] Simple crafting
+- [ ] Multiplayer networking (20-30 players)
+- [ ] One biome (Massachusetts forest)
+
+### Phase 2: Era Progression System (6-12 months)
+- [ ] Time advancement mechanics
+- [ ] Tech unlocks through historical events
+- [ ] Multiple eras playable (1620 → 1700 → 1820)
+- [ ] Building system
+- [ ] AI animals + hunting
+- [ ] Weather/seasons
+- [ ] Polished 10 sq km area
+
+### Phase 3: Funding Push
+- [ ] Cinematic trailer (Revenant-style)
+- [ ] Playable demo (Phase 0 polished)
+- [ ] Kickstarter or publisher pitch
+- [ ] Cultural advisor partnerships (tribal consultation)
+
+### Phase 4: Full Production (2-3 years with funding)
+- Full 50 sq km map
+- All eras (1620-1820)
+- Complete faction systems
+- Disease/diplomacy mechanics
+- Beta testing
+- Launch
+
+---
+
+## Inspiration / Reference
+
+### Games
+- Rust (survival, building, PvP tension)
+- Red Dead Redemption 2 (atmosphere, hunting, period detail)
+- The Forest (co-op survival, native mystery)
+- Kingdom Come: Deliverance (historical grounding, no fantasy)
+- Valheim (co-op survival, building, progression)
+
+### Films
+- The Revenant (tone, survival, combat)
+- The New World (Terrence Malick, first contact beauty)
+- Last of the Mohicans (frontier warfare)
+- Apocalypto (indigenous perspective, brutal survival)
+
+### Books
+- "1491" by Charles C. Mann (pre-Columbus Americas)
+- "Mayflower" by Nathaniel Philbrick (Plymouth story)
+- "Bury My Heart at Wounded Knee" (later era but essential)
+- "Empire of the Summer Moon" (Comanche, later era)
+
+---
+
+## Open Questions
+
+- [ ] Permadeath or harsh respawn penalty?
+- [ ] How do ships/reinforcements work? (Queue system? Scheduled arrivals?)
+- [ ] PvP always on or flagging system?
+- [ ] How to handle the "everyone plays native to win" balance issue?
+- [ ] What happens when settlers "win" a server? Reset? New map?
+- [ ] Specific tribe partnerships for cultural consultation?
+
+---
+
+## Personal Connection
+
+Developer's grandparents served on a Native American reservation in Nebraska. This game is partly a tribute to that experience and a desire to tell this story with respect and authenticity.
+
+The goal is not to exploit history but to let players experience it from both sides - and understand what was gained and lost.
+
+---
+
+*Document started: December 2024*
+*Last updated: December 2024*
+*1820 Demo section added: December 2024*
+*French faction + Geography added: December 2024*
+*1820 Faction Tech + "The Edge" setting added: December 2024*
