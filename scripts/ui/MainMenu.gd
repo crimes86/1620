@@ -1,22 +1,23 @@
 extends Control
 ## Main Menu for 1620 Greybox
 
-const GREYBOX_SCENE = "res://scenes/greybox_ambush.tscn"
+const SYMMETRIC_MAP = "res://scenes/symmetric_map.tscn"
+const GREYBOX_SCENE = "res://scenes/greybox_ambush.tscn"  # Legacy
 
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 func _on_play_pressed() -> void:
-	print("[Menu] Starting greybox...")
+	print("[Menu] Starting symmetric map...")
 	GameManager.change_state(GameManager.GameState.LOADING)
-	get_tree().change_scene_to_file(GREYBOX_SCENE)
+	get_tree().change_scene_to_file(SYMMETRIC_MAP)
 
 func _on_host_pressed() -> void:
-	print("[Menu] Starting server and loading greybox...")
+	print("[Menu] Starting server and loading map...")
 	var error = NetworkManager.start_server()
 	if error == OK:
 		GameManager.change_state(GameManager.GameState.LOADING)
-		get_tree().change_scene_to_file(GREYBOX_SCENE)
+		get_tree().change_scene_to_file(SYMMETRIC_MAP)
 	else:
 		push_error("Failed to start server!")
 
@@ -28,7 +29,7 @@ func _on_join_pressed() -> void:
 		# Wait for connection then load scene
 		await get_tree().create_timer(1.0).timeout
 		GameManager.change_state(GameManager.GameState.LOADING)
-		get_tree().change_scene_to_file(GREYBOX_SCENE)
+		get_tree().change_scene_to_file(SYMMETRIC_MAP)
 	else:
 		push_error("Failed to connect!")
 
