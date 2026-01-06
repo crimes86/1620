@@ -1,0 +1,71 @@
+[gd_scene load_steps=2 format=3 uid="uid://greybox_ambush_1620"]
+
+[ext_resource type="PackedScene" uid="uid://player_1620" path="res://scenes/player/player.tscn" id="1_player"]
+
+[node name="GrayboxAmbush" type="Node3D"]
+
+[node name="Environment" type="Node3D" parent="."]
+
+[node name="Ground" type="CSGBox3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+size = Vector3(200, 0.5, 150)
+
+[node name="River" type="CSGBox3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.35, -65)
+size = Vector3(200, 0.3, 20)
+
+[node name="Riverbank" type="CSGBox3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 0.5, -51)
+size = Vector3(200, 2, 8)
+
+[node name="Camp" type="Node3D" parent="."]
+
+[node name="Campfire" type="Node3D" parent="Camp"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
+
+[node name="FireBase" type="CSGBox3D" parent="Camp/Campfire"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
+size = Vector3(1, 0.3, 1)
+
+[node name="FireLight" type="OmniLight3D" parent="Camp/Campfire"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+light_color = Color(1, 0.6, 0.3, 1)
+light_energy = 2.0
+omni_range = 15.0
+
+[node name="SpawnPoints" type="Node3D" parent="."]
+
+[node name="Spawn_Trapper_01" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 8)
+
+[node name="Spawn_Trapper_02" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 12)
+
+[node name="Spawn_Native_01" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0, 60)
+
+[node name="Spawn_Native_02" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0, 55)
+
+[node name="Lighting" type="Node3D" parent="."]
+
+[node name="Sun" type="DirectionalLight3D" parent="Lighting"]
+transform = Transform3D(0.866025, 0.129409, -0.482963, 0, 0.965926, 0.258819, 0.5, -0.224144, 0.836516, 0, 50, 0)
+light_color = Color(1, 0.85, 0.7, 1)
+light_energy = 0.8
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Lighting"]
+
+[node name="Player" parent="." instance=ExtResource("1_player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 10)
+
+[node name="Instructions" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 5)
+pixel_size = 0.02
+text = "1620 GREYBOX - The Ambush
+WASD = Move | Shift = Sprint | Space = Jump
+Mouse = Look | Esc = Release cursor
+
+Run the GrayboxGenerator.gd script to populate trees!"
+font_size = 32
