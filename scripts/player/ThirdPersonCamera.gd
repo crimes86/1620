@@ -4,6 +4,7 @@ class_name ThirdPersonCamera
 ## - Right-click drag to rotate camera
 ## - Scroll wheel to zoom
 ## - Camera collision to prevent clipping
+## - Camera stays independent of player body rotation
 
 @export_group("Orbit")
 @export var min_distance: float = 2.0
@@ -24,7 +25,6 @@ class_name ThirdPersonCamera
 @export var rotation_smoothing: float = 15.0
 @export var zoom_smoothing: float = 10.0
 
-@onready var camera: Camera3D = $Camera3D
 @onready var spring_arm: SpringArm3D = $SpringArm3D
 
 var _target_distance: float
@@ -39,6 +39,11 @@ var _is_rotating: bool = false
 func _ready() -> void:
 	_target_distance = default_distance
 	_current_distance = default_distance
+	_pitch = deg_to_rad(-20.0)
+	_target_pitch = deg_to_rad(-20.0)
+
+	# Make this node top-level so it doesn't inherit parent rotation
+	set_as_top_level(true)
 
 	# Setup spring arm for collision
 	if spring_arm:
@@ -69,6 +74,11 @@ func _unhandled_input(event: InputEvent) -> void:
 		_target_pitch = clamp(_target_pitch, deg_to_rad(min_pitch), deg_to_rad(max_pitch))
 
 func _process(delta: float) -> void:
+	# Follow player position (since we're top-level)
+	var parent = get_parent()
+	if parent:
+		global_position = parent.global_position + Vector3(0, 1.2, 0)  # Offset to shoulder height
+
 	# Smooth rotation
 	_yaw = lerp_angle(_yaw, _target_yaw, rotation_smoothing * delta)
 	_pitch = lerp(_pitch, _target_pitch, rotation_smoothing * delta)
