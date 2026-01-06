@@ -123,5 +123,5 @@ func _on_server_disconnected() -> void:
 func get_player_count() -> int:
 	return connected_peers.size()
 
-func is_connected() -> bool:
+func is_network_active() -> bool:
 	return peer != null and (is_server or is_client)
